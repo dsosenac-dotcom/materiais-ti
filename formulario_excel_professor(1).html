@@ -1,0 +1,324 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+.header{background:#1F3864;color:#fff;padding:20px 24px;border-radius:var(--border-radius-lg) var(--border-radius-lg) 0 0}
+.header h1{font-size:18px;font-weight:500;margin-bottom:4px}
+.header p{font-size:13px;opacity:.8}
+.form-body{padding:20px 24px;background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-top:none;border-radius:0 0 var(--border-radius-lg) var(--border-radius-lg)}
+.aluno-fields{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:24px;padding-bottom:20px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.field label{display:block;font-size:12px;color:var(--color-text-secondary);margin-bottom:4px}
+.field input{width:100%;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:7px 10px;font-size:13px;background:var(--color-background-primary);color:var(--color-text-primary)}
+.questao{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:14px 16px;margin-bottom:12px;border-left:3px solid #2E75B6;border-left-style:solid}
+.questao-num{font-size:11px;font-weight:500;color:#185FA5;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.questao-enunciado{font-size:14px;color:var(--color-text-primary);margin-bottom:12px;line-height:1.5}
+.questao-codigo{font-family:var(--font-mono);font-size:12px;background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:6px 10px;margin-bottom:10px;color:#185FA5}
+.opcoes{display:flex;flex-direction:column;gap:6px}
+.opcao{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);cursor:pointer;transition:background .15s;background:var(--color-background-primary)}
+.opcao:hover{background:var(--color-background-info)}
+.opcao input[type=radio]{accent-color:#2E75B6;width:15px;height:15px;flex-shrink:0}
+.opcao label{font-size:13px;cursor:pointer;color:var(--color-text-primary)}
+.opcao.correta{background:#E2EFDA;border-color:#3BAA5A}
+.opcao.errada{background:#FCE4D6;border-color:#C00000}
+.opcao.gabarito-reveal{background:#E2EFDA;border-color:#3BAA5A}
+.resultado-inline{font-size:12px;margin-top:6px;padding:4px 10px;border-radius:var(--border-radius-md);display:none}
+.acoes{display:flex;gap:12px;margin-top:24px;padding-top:20px;border-top:0.5px solid var(--color-border-tertiary);flex-wrap:wrap}
+.btn{padding:9px 20px;border-radius:var(--border-radius-md);font-size:13px;font-weight:500;cursor:pointer;border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-primary)}
+.btn:hover{background:var(--color-background-secondary)}
+.btn-primary{background:#1F3864;color:#fff;border-color:#1F3864}
+.btn-primary:hover{background:#2E75B6;border-color:#2E75B6}
+.btn-danger{background:#FCE4D6;color:#7B1D1D;border-color:#F09595}
+.btn-danger:hover{background:#F09595}
+.placar{background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:16px 20px;margin-top:20px;display:none;border:0.5px solid var(--color-border-tertiary)}
+.placar h2{font-size:16px;font-weight:500;margin-bottom:12px;color:var(--color-text-primary)}
+.barra{height:20px;border-radius:10px;background:#E2EFDA;overflow:hidden;margin-bottom:8px}
+.barra-fill{height:100%;background:#3BAA5A;border-radius:10px;transition:width .6s}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.stat{background:var(--color-background-primary);border-radius:var(--border-radius-md);padding:10px;text-align:center;border:0.5px solid var(--color-border-tertiary)}
+.stat-num{font-size:22px;font-weight:500}
+.stat-label{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+.nota-badge{display:inline-block;padding:4px 14px;border-radius:20px;font-size:13px;font-weight:500;margin-top:8px}
+.por-questao{margin-top:14px;display:flex;flex-wrap:wrap;gap:6px}
+.bolinha{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:#fff}
+.secao-titulo{font-size:11px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.8px;margin:20px 0 10px;padding-bottom:6px;border-bottom:0.5px solid var(--color-border-tertiary)}
+</style>
+
+<div class="header">
+  <h1>Avaliacao de Excel — Entendimento de Formulas</h1>
+  <p>15 questoes de multipla escolha — nivels variados</p>
+</div>
+
+<div class="form-body">
+  <div class="aluno-fields">
+    <div class="field"><label>Nome do aluno</label><input type="text" id="nome" placeholder="Nome completo"></div>
+    <div class="field"><label>Turma</label><input type="text" id="turma" placeholder="Ex: 8A, 9B..."></div>
+    <div class="field"><label>Data</label><input type="date" id="data"></div>
+  </div>
+
+  <div class="secao-titulo">Bloco 1 — Formulas Basicas (Q1 a Q5)</div>
+
+  <div class="questao" data-q="1" data-gabarito="b">
+    <div class="questao-num">Questao 1</div>
+    <div class="questao-enunciado">Qual formula calcula a MEDIA de um intervalo de celulas?</div>
+    <div class="opcoes">
+      <div class="opcao"><input type="radio" name="q1" value="a" id="q1a"><label for="q1a">A) =SOMA(A1:A10)</label></div>
+      <div class="opcao"><input type="radio" name="q1" value="b" id="q1b"><label for="q1b">B) =MEDIA(A1:A10)</label></div>
+      <div class="opcao"><input type="radio" name="q1" value="c" id="q1c"><label for="q1c">C) =CONTAR(A1:A10)</label></div>
+      <div class="opcao"><input type="radio" name="q1" value="d" id="q1d"><label for="q1d">D) =MAXIMO(A1:A10)</label></div>
+    </div>
+  </div>
+
+  <div class="questao" data-q="2" data-gabarito="c">
+    <div class="questao-num">Questao 2</div>
+    <div class="questao-enunciado">O que faz o simbolo $ em uma formula como =$A$1?</div>
+    <div class="opcoes">
+      <div class="opcao"><input type="radio" name="q2" value="a" id="q2a"><label for="q2a">A) Indica valor em moeda</label></div>
+      <div class="opcao"><input type="radio" name="q2" value="b" id="q2b"><label for="q2b">B) Multiplica o valor da celula</label></div>
+      <div class="opcao"><input type="radio" name="q2" value="c" id="q2c"><label for="q2c">C) Trava a referencia — ela nao muda ao copiar a formula</label></div>
+      <div class="opcao"><input type="radio" name="q2" value="d" id="q2d"><label for="q2d">D) Formata a celula como moeda automaticamente</label></div>
+    </div>
+  </div>
+
+  <div class="questao" data-q="3" data-gabarito="a">
+    <div class="questao-num">Questao 3</div>
+    <div class="questao-enunciado">Analise a formula abaixo e escolha o que ela faz:</div>
+    <div class="questao-codigo">=SE(A1>=6,"Aprovado","Reprovado")</div>
+    <div class="opcoes">
+      <div class="opcao"><input type="radio" name="q3" value="a" id="q3a"><label for="q3a">A) Se o valor em A1 for maior ou igual a 6, mostra "Aprovado"; senao mostra "Reprovado"</label></div>
+      <div class="opcao"><input type="radio" name="q3" value="b" id="q3b"><label for="q3b">B) Soma os valores maiores que 6 no intervalo A1</label></div>
+      <div class="opcao"><input type="radio" name="q3" value="c" id="q3c"><label for="q3c">C) Conta quantas celulas contem "Aprovado"</label></div>
+      <div class="opcao"><input type="radio" name="q3" value="d" id="q3d"><label for="q3d">D) Mostra o texto "Aprovado" sempre, ignorando o valor</label></div>
+    </div>
+  </div>
+
+  <div class="questao" data-q="4" data-gabarito="d">
+    <div class="questao-num">Questao 4</div>
+    <div class="questao-enunciado">O que faz a formula =CONT.SE(B1:B10,"Aprovado")?</div>
+    <div class="opcoes">
+      <div class="opcao"><input type="radio" name="q4" value="a" id="q4a"><label for="q4a">A) Soma todos os valores onde a celula for "Aprovado"</label></div>
+      <div class="opcao"><input type="radio" name="q4" value="b" id="q4b"><label for="q4b">B) Escreve "Aprovado" em todas as celulas do intervalo</label></div>
+      <div class="opcao"><input type="radio" name="q4" value="c" id="q4c"><label for="q4c">C) Filtra o intervalo mostrando apenas "Aprovado"</label></div>
+      <div class="opcao"><input type="radio" name="q4" value="d" id="q4d"><label for="q4d">D) Conta quantas celulas em B1:B10 contem exatamente "Aprovado"</label></div>
+    </div>
+  </div>
+
+  <div class="questao" data-q="5" data-gabarito="b">
+    <div class="questao-num">Questao 5</div>
+    <div class="questao-enunciado">Qual e o resultado da formula =SOMA(2,3,5)?</div>
+    <div class="opcoes">
+      <div class="opcao"><input type="radio" name="q5" value="a" id="q5a"><label for="q5a">A) 235</label></div>
+      <div class="opcao"><input type="radio" name="q5" value="b" id="q5b"><label for="q5b">B) 10</label></div>
+      <div class="opcao"><input type="radio" name="q5" value="c" id="q5c"><label for="q5c">C) 5</label></div>
+      <div class="opcao"><input type="radio" name="q5" value="d" id="q5d"><label for="q5d">D) Erro — SOMA nao aceita numeros diretos</label></div>
+    </div>
+  </div>
+
+  <div class="secao-titulo">Bloco 2 — Formulas de Busca (Q6 a Q10)</div>
+
+  <div class="questao" data-q="6" data-gabarito="c">
+    <div class="questao-num">Questao 6</div>
+    <div class="questao-enunciado">O que faz a formula abaixo?</div>
+    <div class="questao-codigo">=PROCV("Ana",$A$1:$C$10,3,0)</div>
+    <div class="opcoes">
+      <div class="opcao"><input type="radio" name="q6" value="a" id="q6a"><label for="q6a">A) Copia o valor "Ana" para a coluna 3</label></div>
+      <div class="opcao"><input type="radio" name="q6" value="b" id="q6b"><label for="q6b">B) Conta quantas vezes "Ana" aparece na coluna 3</label></div>
+      <div class="opcao"><input type="radio" name="q6" value="c" id="q6c"><label for="q6c">C) Busca "Ana" na 1a coluna da tabela e retorna o valor da 3a coluna da mesma linha</label></div>
+      <div class="opcao"><input type="radio" name="q6" value="d" id="q6d"><label for="q6d">D) Soma todos os valores da coluna 3 onde a coluna 1 for "Ana"</label></div>
+    </div>
+  </div>
+
+  <div class="questao" data-q="7" data-gabarito="a">
+    <div class="questao-num">Questao 7</div>
+    <div class="questao-enunciado">Qual e a vantagem do PROCX em relacao ao PROCV?</div>
+    <div class="opcoes">
+      <div class="opcao"><input type="radio" name="q7" value="a" id="q7a"><label for="q7a">A) Nao precisa contar colunas — voce aponta diretamente o intervalo de retorno</label></div>
+      <div class="opcao"><input type="radio" name="q7" value="b" id="q7b"><label for="q7b">B) E mais rapido porque usa menos letras na formula</label></div>
+      <div class="opcao"><input type="radio" name="q7" value="c" id="q7c"><label for="q7c">C) So funciona com numeros, nao com texto</label></div>
+      <div class="opcao"><input type="radio" name="q7" value="d" id="q7d"><label for="q7d">D) So existe no Excel 2010 e versoes mais antigas</label></div>
+    </div>
+  </div>
+
+  <div class="questao" data-q="8" data-gabarito="d">
+    <div class="questao-num">Questao 8</div>
+    <div class="questao-enunciado">O que a formula SEERRO faz quando envolve um PROCV?</div>
+    <div class="questao-codigo">=SEERRO(PROCV(A1,$B$1:$C$10,2,0),"Nao encontrado")</div>
+    <div class="opcoes">
+      <div class="opcao"><input type="radio" name="q8" value="a" id="q8a"><label for="q8a">A) Impede que o PROCV seja executado</label></div>
+      <div class="opcao"><input type="radio" name="q8" value="b" id="q8b"><label for="q8b">B) Faz o PROCV buscar o erro mais proximo</label></div>
+      <div class="opcao"><input type="radio" name="q8" value="c" id="q8c"><label for="q8c">C) Transforma o resultado em texto automaticamente</label></div>
+      <div class="opcao"><input type="radio" name="q8" value="d" id="q8d"><label for="q8d">D) Se o PROCV retornar um erro (#N/D), mostra "Nao encontrado" em vez do erro</label></div>
+    </div>
+  </div>
+
+  <div class="questao" data-q="9" data-gabarito="b">
+    <div class="questao-num">Questao 9</div>
+    <div class="questao-enunciado">Qual formula retorna a posicao de um valor dentro de um intervalo?</div>
+    <div class="opcoes">
+      <div class="opcao"><input type="radio" name="q9" value="a" id="q9a"><label for="q9a">A) =INDICE(A1:A10,"Ana")</label></div>
+      <div class="opcao"><input type="radio" name="q9" value="b" id="q9b"><label for="q9b">B) =CORRESP("Ana",A1:A10,0)</label></div>
+      <div class="opcao"><input type="radio" name="q9" value="c" id="q9c"><label for="q9c">C) =PROCV("Ana",A1:A10,1,0)</label></div>
+      <div class="opcao"><input type="radio" name="q9" value="d" id="q9d"><label for="q9d">D) =ESCOLHER("Ana",A1:A10)</label></div>
+    </div>
+  </div>
+
+  <div class="questao" data-q="10" data-gabarito="c">
+    <div class="questao-num">Questao 10</div>
+    <div class="questao-enunciado">O que faz a combinacao INDICE + CORRESP?</div>
+    <div class="opcoes">
+      <div class="opcao"><input type="radio" name="q10" value="a" id="q10a"><label for="q10a">A) Cria uma lista suspensa automaticamente</label></div>
+      <div class="opcao"><input type="radio" name="q10" value="b" id="q10b"><label for="q10b">B) Conta valores unicos em um intervalo</label></div>
+      <div class="opcao"><input type="radio" name="q10" value="c" id="q10c"><label for="q10c">C) Faz uma busca bidirecional — encontra o valor pelo cruzamento de linha e coluna</label></div>
+      <div class="opcao"><input type="radio" name="q10" value="d" id="q10d"><label for="q10d">D) Ordena um intervalo em ordem crescente</label></div>
+    </div>
+  </div>
+
+  <div class="secao-titulo">Bloco 3 — Formulas Avancadas (Q11 a Q15)</div>
+
+  <div class="questao" data-q="11" data-gabarito="a">
+    <div class="questao-num">Questao 11</div>
+    <div class="questao-enunciado">Qual e a diferenca entre E() e OU() dentro de um SE?</div>
+    <div class="opcoes">
+      <div class="opcao"><input type="radio" name="q11" value="a" id="q11a"><label for="q11a">A) E() exige que TODAS as condicoes sejam verdadeiras. OU() basta UMA ser verdadeira.</label></div>
+      <div class="opcao"><input type="radio" name="q11" value="b" id="q11b"><label for="q11b">B) E() funciona com numeros, OU() funciona com texto</label></div>
+      <div class="opcao"><input type="radio" name="q11" value="c" id="q11c"><label for="q11c">C) Sao identicos — fazem a mesma coisa com nomes diferentes</label></div>
+      <div class="opcao"><input type="radio" name="q11" value="d" id="q11d"><label for="q11d">D) OU() so pode ter duas condicoes, E() pode ter ate 10</label></div>
+    </div>
+  </div>
+
+  <div class="questao" data-q="12" data-gabarito="d">
+    <div class="questao-num">Questao 12</div>
+    <div class="questao-enunciado">Para que serve a formula SOMASES?</div>
+    <div class="opcoes">
+      <div class="opcao"><input type="radio" name="q12" value="a" id="q12a"><label for="q12a">A) Soma todos os valores de um intervalo, sem excecoes</label></div>
+      <div class="opcao"><input type="radio" name="q12" value="b" id="q12b"><label for="q12b">B) Conta celulas que atendem a um criterio</label></div>
+      <div class="opcao"><input type="radio" name="q12" value="c" id="q12c"><label for="q12c">C) Soma valores maiores que zero automaticamente</label></div>
+      <div class="opcao"><input type="radio" name="q12" value="d" id="q12d"><label for="q12d">D) Soma valores que atendem a DOIS ou mais criterios simultaneos</label></div>
+    </div>
+  </div>
+
+  <div class="questao" data-q="13" data-gabarito="b">
+    <div class="questao-num">Questao 13</div>
+    <div class="questao-enunciado">Qual formula calcula a media ponderada de notas com pesos diferentes?</div>
+    <div class="opcoes">
+      <div class="opcao"><input type="radio" name="q13" value="a" id="q13a"><label for="q13a">A) =MEDIA(A1:A3)*SOMA(B1:B3)</label></div>
+      <div class="opcao"><input type="radio" name="q13" value="b" id="q13b"><label for="q13b">B) =SOMARPRODUTO(A1:A3,B1:B3)/SOMA(B1:B3)</label></div>
+      <div class="opcao"><input type="radio" name="q13" value="c" id="q13c"><label for="q13c">C) =MEDIA.PONDERADA(A1:A3,B1:B3)</label></div>
+      <div class="opcao"><input type="radio" name="q13" value="d" id="q13d"><label for="q13d">D) =SOMA(A1*B1,A2*B2,A3*B3)/3</label></div>
+    </div>
+  </div>
+
+  <div class="questao" data-q="14" data-gabarito="c">
+    <div class="questao-num">Questao 14</div>
+    <div class="questao-enunciado">O que a formula ARRUMAR faz com o texto "  ana   silva  "?</div>
+    <div class="opcoes">
+      <div class="opcao"><input type="radio" name="q14" value="a" id="q14a"><label for="q14a">A) Coloca o texto em maiusculo</label></div>
+      <div class="opcao"><input type="radio" name="q14" value="b" id="q14b"><label for="q14b">B) Conta o numero de caracteres do texto</label></div>
+      <div class="opcao"><input type="radio" name="q14" value="c" id="q14c"><label for="q14c">C) Remove espacos extras das bordas e entre palavras, resultando em "ana silva"</label></div>
+      <div class="opcao"><input type="radio" name="q14" value="d" id="q14d"><label for="q14d">D) Substitui os espacos por tracos</label></div>
+    </div>
+  </div>
+
+  <div class="questao" data-q="15" data-gabarito="a">
+    <div class="questao-num">Questao 15</div>
+    <div class="questao-enunciado">O que a formula FILTER faz (Excel 365)?</div>
+    <div class="questao-codigo">=FILTER(A1:C10,B1:B10>=7,"Nenhum")</div>
+    <div class="opcoes">
+      <div class="opcao"><input type="radio" name="q15" value="a" id="q15a"><label for="q15a">A) Retorna todas as linhas onde o valor na coluna B for maior ou igual a 7</label></div>
+      <div class="opcao"><input type="radio" name="q15" value="b" id="q15b"><label for="q15b">B) Filtra apenas a coluna B, mantendo as outras inalteradas</label></div>
+      <div class="opcao"><input type="radio" name="q15" value="c" id="q15c"><label for="q15c">C) Conta quantas linhas tem valor maior ou igual a 7</label></div>
+      <div class="opcao"><input type="radio" name="q15" value="d" id="q15d"><label for="q15d">D) Remove as linhas onde o valor for menor que 7</label></div>
+    </div>
+  </div>
+
+  <div class="acoes">
+    <button class="btn btn-primary" onclick="corrigir()">Corrigir avaliacao</button>
+    <button class="btn" onclick="verGabarito()">Ver gabarito (professor)</button>
+    <button class="btn btn-danger" onclick="limpar()">Limpar respostas</button>
+  </div>
+
+  <div class="placar" id="placar">
+    <h2 id="placar-titulo">Resultado</h2>
+    <div class="barra"><div class="barra-fill" id="barra-fill" style="width:0%"></div></div>
+    <div class="stats">
+      <div class="stat"><div class="stat-num" id="stat-certas" style="color:#3BAA5A">0</div><div class="stat-label">Certas</div></div>
+      <div class="stat"><div class="stat-num" id="stat-erradas" style="color:#C00000">0</div><div class="stat-label">Erradas</div></div>
+      <div class="stat"><div class="stat-num" id="stat-nota">0,0</div><div class="stat-label">Nota (0-10)</div></div>
+    </div>
+    <div style="margin-top:10px;text-align:center"><span class="nota-badge" id="nota-badge"></span></div>
+    <div class="por-questao" id="por-questao"></div>
+  </div>
+</div>
+
+<script>
+const gabaritos={q1:'b',q2:'c',q3:'a',q4:'d',q5:'b',q6:'c',q7:'a',q8:'d',q9:'b',q10:'c',q11:'a',q12:'d',q13:'b',q14:'c',q15:'a'};
+
+function corrigir(){
+  let certas=0, erradas=0, naoResp=0;
+  const bolinhas=[];
+  document.querySelectorAll('.questao').forEach(q=>{
+    const num=q.dataset.q;
+    const gab=q.dataset.gabarito;
+    const sel=document.querySelector(`input[name="q${num}"]:checked`);
+    q.querySelectorAll('.opcao').forEach(o=>{
+      o.classList.remove('correta','errada','gabarito-reveal');
+    });
+    if(!sel){naoResp++; bolinhas.push({n:num,r:'n'}); return;}
+    const resp=sel.value;
+    const opcaoSel=sel.closest('.opcao');
+    if(resp===gab){
+      opcaoSel.classList.add('correta');
+      certas++;
+      bolinhas.push({n:num,r:'c'});
+    } else {
+      opcaoSel.classList.add('errada');
+      q.querySelector(`input[value="${gab}"]`).closest('.opcao').classList.add('gabarito-reveal');
+      erradas++;
+      bolinhas.push({n:num,r:'e'});
+    }
+  });
+  const total=15;
+  const nota=((certas/total)*10).toFixed(1).replace('.',',');
+  const pct=Math.round((certas/total)*100);
+  document.getElementById('barra-fill').style.width=pct+'%';
+  document.getElementById('stat-certas').textContent=certas;
+  document.getElementById('stat-erradas').textContent=erradas+(naoResp>0?` (+${naoResp} sem resp)`:'');
+  document.getElementById('stat-nota').textContent=nota;
+  const badge=document.getElementById('nota-badge');
+  const n=parseFloat(nota.replace(',','.'));
+  if(n>=9){badge.textContent='Excelente!';badge.style.background='#E2EFDA';badge.style.color='#27500A';}
+  else if(n>=7){badge.textContent='Bom desempenho';badge.style.background='#D6E4F0';badge.style.color='#0C447C';}
+  else if(n>=5){badge.textContent='Recuperacao';badge.style.background='#FFF2CC';badge.style.color='#633806';}
+  else{badge.textContent='Insuficiente';badge.style.background='#FCE4D6';badge.style.color='#7B1D1D';}
+  const nome=document.getElementById('nome').value||'Aluno';
+  document.getElementById('placar-titulo').textContent=`Resultado de ${nome}`;
+  const pq=document.getElementById('por-questao');
+  pq.innerHTML='';
+  bolinhas.forEach(b=>{
+    const d=document.createElement('div');
+    d.className='bolinha';
+    d.textContent=b.n;
+    d.style.background=b.r==='c'?'#3BAA5A':b.r==='e'?'#C00000':'#888780';
+    d.title=`Q${b.n}: ${b.r==='c'?'Correta':b.r==='e'?'Errada':'Sem resposta'}`;
+    pq.appendChild(d);
+  });
+  document.getElementById('placar').style.display='block';
+  document.getElementById('placar').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function verGabarito(){
+  document.querySelectorAll('.questao').forEach(q=>{
+    const gab=q.dataset.gabarito;
+    q.querySelectorAll('.opcao').forEach(o=>o.classList.remove('correta','errada','gabarito-reveal'));
+    q.querySelector(`input[value="${gab}"]`).closest('.opcao').classList.add('gabarito-reveal');
+  });
+  document.querySelector('.questao').scrollIntoView({behavior:'smooth'});
+}
+
+function limpar(){
+  document.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false);
+  document.querySelectorAll('.opcao').forEach(o=>o.classList.remove('correta','errada','gabarito-reveal'));
+  document.getElementById('placar').style.display='none';
+  document.getElementById('nome').value='';
+  document.getElementById('turma').value='';
+}
+</script>
