@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSO Educacao — Portal do Aluno</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --az1:#1F3864;--az2:#2E75B6;--az3:#BDD7EE;
+  --vd:#1E7145;--vd2:#E2EFDA;
+  --am:#7F6000;--am2:#FFF2CC;
+  --rx:#512E5F;--rx2:#F2E6FF;
+  --lg:#F4F6F9;--br:#ffffff;
+  --txt:#1a1a2e;--txt2:#555;
+  --sombra:0 2px 12px rgba(0,0,0,0.08);
+}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--lg);color:var(--txt);line-height:1.6}
+
+/* HEADER */
+header{background:var(--az1);color:#fff;padding:0}
+.header-top{display:flex;align-items:center;justify-content:space-between;padding:16px 32px;border-bottom:1px solid rgba(255,255,255,0.1)}
+.logo{display:flex;align-items:center;gap:14px}
+.logo-icon{width:48px;height:48px;background:var(--az2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;letter-spacing:-1px;color:#fff;border:2px solid rgba(255,255,255,0.3)}
+.logo-text h1{font-size:20px;font-weight:700;letter-spacing:.5px}
+.logo-text p{font-size:12px;opacity:.7;margin-top:1px}
+.header-badge{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:6px 16px;font-size:12px;color:rgba(255,255,255,0.85)}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#1F3864 0%,#2E75B6 100%);padding:40px 32px;text-align:center;color:#fff}
+.hero h2{font-size:26px;font-weight:700;margin-bottom:8px}
+.hero p{font-size:14px;opacity:.85;max-width:520px;margin:0 auto 20px}
+.hero-stats{display:flex;justify-content:center;gap:32px;flex-wrap:wrap}
+.stat{text-align:center}
+.stat-num{font-size:28px;font-weight:700;color:#FFC000}
+.stat-label{font-size:11px;opacity:.8;margin-top:2px}
+
+/* NAV FILTRO */
+.nav-filtro{background:#fff;padding:14px 32px;display:flex;gap:10px;flex-wrap:wrap;box-shadow:var(--sombra);position:sticky;top:0;z-index:100;border-bottom:3px solid var(--az3)}
+.filtro-btn{padding:7px 18px;border-radius:20px;border:1.5px solid var(--az3);background:#fff;color:var(--az2);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s}
+.filtro-btn:hover,.filtro-btn.ativo{background:var(--az2);color:#fff;border-color:var(--az2)}
+
+/* MAIN */
+main{max-width:1100px;margin:0 auto;padding:32px 24px}
+
+/* AVISO PROFESSOR */
+.aviso-prof{background:var(--am2);border-left:4px solid #FFC000;border-radius:8px;padding:14px 20px;margin-bottom:28px;display:flex;align-items:center;gap:12px;font-size:13px;color:var(--am)}
+.aviso-prof strong{display:block;margin-bottom:2px;font-size:14px}
+
+/* SECOES */
+.secao{margin-bottom:36px}
+.secao-titulo{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--az3)}
+.secao-titulo .icone{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.secao-titulo h2{font-size:18px;font-weight:700;color:var(--az1)}
+.secao-titulo span{font-size:12px;color:var(--txt2);margin-left:auto;background:var(--az3);padding:3px 10px;border-radius:10px;color:var(--az2);font-weight:500}
+
+/* CARDS GRID */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+
+/* CARD */
+.card{background:#fff;border-radius:12px;box-shadow:var(--sombra);border:1px solid #e8ecf0;overflow:hidden;transition:transform .2s,box-shadow .2s;cursor:pointer}
+.card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.12)}
+.card-header{padding:16px;display:flex;align-items:center;gap:12px}
+.card-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.card-meta{flex:1}
+.card-titulo{font-size:14px;font-weight:700;color:var(--txt);margin-bottom:2px}
+.card-subtitulo{font-size:11px;color:var(--txt2)}
+.card-body{padding:0 16px 14px}
+.card-desc{font-size:12px;color:var(--txt2);line-height:1.5;margin-bottom:12px}
+.card-footer{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.tag{font-size:10px;font-weight:600;padding:3px 9px;border-radius:10px;text-transform:uppercase;letter-spacing:.4px}
+.tag-info{background:var(--az3);color:var(--az2)}
+.tag-excel{background:#E2EFDA;color:#1E7145}
+.tag-pptx{background:#FCE4D6;color:#843C0C}
+.tag-pdf{background:#FCE4D6;color:#7B1D1D}
+.tag-html{background:var(--rx2);color:var(--rx)}
+.tag-robo{background:#E8F5E9;color:#2E7D32}
+.btn-baixar{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;text-decoration:none;border:none;cursor:pointer;transition:all .2s}
+.btn-az{background:var(--az2);color:#fff}
+.btn-az:hover{background:var(--az1)}
+.btn-vd{background:var(--vd);color:#fff}
+.btn-vd:hover{background:#145a32}
+
+/* CARD DESTAQUE */
+.card-destaque{background:linear-gradient(135deg,var(--az1),var(--az2));color:#fff;border-radius:12px;padding:20px;display:flex;align-items:center;gap:16px;margin-bottom:20px;box-shadow:var(--sombra)}
+.card-destaque .texto h3{font-size:16px;margin-bottom:4px}
+.card-destaque .texto p{font-size:12px;opacity:.85}
+.card-destaque .icone-grande{font-size:40px;flex-shrink:0}
+.card-destaque .btn-destaque{margin-top:12px;display:inline-block;background:#FFC000;color:#7F6000;font-weight:700;padding:8px 20px;border-radius:8px;text-decoration:none;font-size:13px}
+
+/* COMUNICADOS */
+.comunicados{display:flex;flex-direction:column;gap:10px}
+.comunicado{background:#fff;border-radius:10px;padding:14px 18px;display:flex;align-items:flex-start;gap:12px;box-shadow:var(--sombra);border-left:4px solid var(--az2)}
+.comunicado.urgente{border-left-color:#C00000}
+.comunicado.ok{border-left-color:#1E7145}
+.comunicado-data{font-size:10px;color:var(--txt2);white-space:nowrap;margin-top:2px}
+.comunicado h4{font-size:13px;font-weight:700;margin-bottom:2px}
+.comunicado p{font-size:12px;color:var(--txt2)}
+
+/* RODAPÉ */
+footer{background:var(--az1);color:rgba(255,255,255,0.7);text-align:center;padding:24px;font-size:12px;margin-top:40px}
+footer strong{color:#FFC000}
+
+/* RESPONSIVO */
+@media(max-width:600px){
+  .header-top{padding:12px 16px;flex-wrap:wrap;gap:8px}
+  .hero{padding:24px 16px}
+  .hero h2{font-size:20px}
+  .hero-stats{gap:20px}
+  .nav-filtro{padding:10px 16px}
+  main{padding:20px 14px}
+  .cards-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-top">
+    <div class="logo">
+      <div class="logo-icon">DSO</div>
+      <div class="logo-text">
+        <h1>DSO Educacao</h1>
+        <p>Portal de Materiais para Alunos</p>
+      </div>
+    </div>
+    <div class="header-badge">Prof. Dario Oliveira · Nova Mutum - MT</div>
+  </div>
+  <div class="hero">
+    <h2>Seus materiais de aula, sempre disponíveis</h2>
+    <p>Acesse atividades, planilhas, apresentacoes e formularios de qualquer lugar, a qualquer hora.</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">20+</div><div class="stat-label">Atividades Excel</div></div>
+      <div class="stat"><div class="stat-num">3</div><div class="stat-label">Turmas atendidas</div></div>
+      <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Gratuito</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- NAV FILTRO -->
+<div class="nav-filtro">
+  <button class="filtro-btn ativo" onclick="filtrar('todos',this)">Todos</button>
+  <button class="filtro-btn" onclick="filtrar('excel',this)">Excel</button>
+  <button class="filtro-btn" onclick="filtrar('informatica',this)">Informatica</button>
+  <button class="filtro-btn" onclick="filtrar('robotica',this)">Robotica</button>
+  <button class="filtro-btn" onclick="filtrar('formulario',this)">Formularios</button>
+  <button class="filtro-btn" onclick="filtrar('apresentacao',this)">Apresentacoes</button>
+</div>
+
+<main>
+
+  <!-- AVISO PROFESSOR -->
+  <div class="aviso-prof">
+    <span style="font-size:22px">📌</span>
+    <div>
+      <strong>Avisos do Professor</strong>
+      Proxima aula: Excel Avancado — Atividades 1 a 10. Traga o computador carregado!
+    </div>
+  </div>
+
+  <!-- COMUNICADOS -->
+  <div class="secao" id="sec-comunicados">
+    <div class="secao-titulo">
+      <div class="icone" style="background:#FFF2CC">📢</div>
+      <h2>Comunicados</h2>
+      <span>3 novos</span>
+    </div>
+    <div class="comunicados">
+      <div class="comunicado ok">
+        <div>
+          <h4>Formulario de Excel disponivel!</h4>
+          <p>O formulario de avaliacao com 15 questoes ja esta online. Acesse pelo link abaixo.</p>
+        </div>
+        <div class="comunicado-data">22/03/2026</div>
+      </div>
+      <div class="comunicado">
+        <div>
+          <h4>Atividades Excel Avancado — 2a Aula</h4>
+          <p>As 20 atividades da 2a aula estao disponiveis para download na secao Excel abaixo.</p>
+        </div>
+        <div class="comunicado-data">21/03/2026</div>
+      </div>
+      <div class="comunicado urgente">
+        <div>
+          <h4>Entrega do Projeto Final — Prazo!</h4>
+          <p>O projeto final de Excel deve ser entregue ate sexta-feira. Veja as instrucoes no arquivo.</p>
+        </div>
+        <div class="comunicado-data">20/03/2026</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DESTAQUE -->
+  <div class="card-destaque" data-cat="formulario">
+    <div class="icone-grande">📝</div>
+    <div class="texto">
+      <h3>Avaliacao de Excel — 15 Questoes</h3>
+      <p>Formulario online com correcao automatica. Responda e veja sua nota na hora!</p>
+      <a href="formulario_excel_professor.html" class="btn-destaque" target="_blank">Acessar Formulario →</a>
+    </div>
+  </div>
+
+  <!-- EXCEL -->
+  <div class="secao" id="sec-excel">
+    <div class="secao-titulo">
+      <div class="icone" style="background:#E2EFDA">📊</div>
+      <h2>Excel</h2>
+      <span>4 arquivos</span>
+    </div>
+    <div class="cards-grid">
+
+      <div class="card" data-cat="excel">
+        <div class="card-header">
+          <div class="card-icon" style="background:#E2EFDA;font-size:22px">📗</div>
+          <div class="card-meta">
+            <div class="card-titulo">Excel Avancado — 1a Aula</div>
+            <div class="card-subtitulo">20 atividades praticas</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-desc">INDICE+CORRESP, DESLOC, INDIRETO, ESCOLHER, SEERRO, MAIOR/MENOR, TEXTO e mais.</div>
+          <div class="card-footer">
+            <span class="tag tag-excel">Excel .xlsx</span>
+            <a href="excel_avancado_20atividades.xlsx" class="btn-baixar btn-vd" download>⬇ Baixar</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-cat="excel">
+        <div class="card-header">
+          <div class="card-icon" style="background:#E2EFDA;font-size:22px">📗</div>
+          <div class="card-meta">
+            <div class="card-titulo">Excel Avancado — 2a Aula</div>
+            <div class="card-subtitulo">20 atividades — nivel expert</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-desc">FILTER, PROCX, SOMARPRODUTO, Dashboard, Grafico com Meta, VBA e Power Query.</div>
+          <div class="card-footer">
+            <span class="tag tag-excel">Excel .xlsx</span>
+            <a href="excel_avancado_2aula_20atividades.xlsx" class="btn-baixar btn-vd" download>⬇ Baixar</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-cat="excel">
+        <div class="card-header">
+          <div class="card-icon" style="background:#FFF2CC;font-size:22px">🔑</div>
+          <div class="card-meta">
+            <div class="card-titulo">Gabarito — 2a Aula</div>
+            <div class="card-subtitulo">Respostas comentadas</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-desc">Gabarito completo com todas as formulas resolvidas e explicadas em cada aba.</div>
+          <div class="card-footer">
+            <span class="tag tag-excel">Excel .xlsx</span>
+            <a href="excel_avancado_2aula_GABARITO.xlsx" class="btn-baixar btn-az" download>⬇ Baixar</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-cat="excel">
+        <div class="card-header">
+          <div class="card-icon" style="background:#BDD7EE;font-size:22px">🧮</div>
+          <div class="card-meta">
+            <div class="card-titulo">Calculadora Matematica</div>
+            <div class="card-subtitulo">Soma, subtracao, multiplicacao, divisao</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-desc">Planilha interativa com calculadora, tabuada automatica e guia para iniciantes.</div>
+          <div class="card-footer">
+            <span class="tag tag-excel">Excel .xlsx</span>
+            <a href="calculadora_melhorada.xlsx" class="btn-baixar btn-az" download>⬇ Baixar</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- INFORMATICA -->
+  <div class="secao" id="sec-informatica">
+    <div class="secao-titulo">
+      <div class="icone" style="background:#E8F5E9">💻</div>
+      <h2>Informatica Basica</h2>
+      <span>2 arquivos</span>
+    </div>
+    <div class="cards-grid">
+
+      <div class="card" data-cat="informatica">
+        <div class="card-header">
+          <div class="card-icon" style="background:#F2E6FF;font-size:22px">🌐</div>
+          <div class="card-meta">
+            <div class="card-titulo">Seguranca na Internet</div>
+            <div class="card-subtitulo">Quiz interativo com timer</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-desc">Quiz online sobre fake news, cyberbullying, privacidade e seguranca digital.</div>
+          <div class="card-footer">
+            <span class="tag tag-html">Online</span>
+            <a href="#" class="btn-baixar btn-az">▶ Acessar</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-cat="informatica">
+        <div class="card-header">
+          <div class="card-icon" style="background:#BDD7EE;font-size:22px">🖥</div>
+          <div class="card-meta">
+            <div class="card-titulo">Hardware — O que e cada peca?</div>
+            <div class="card-subtitulo">Material didatico</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-desc">Aprenda sobre processador, memoria RAM, HD, placa-mae e perifericos.</div>
+          <div class="card-footer">
+            <span class="tag tag-info">Em breve</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ROBOTICA -->
+  <div class="secao" id="sec-robotica">
+    <div class="secao-titulo">
+      <div class="icone" style="background:#E8F5E9">🤖</div>
+      <h2>Robotica — LEGO SPIKE</h2>
+      <span>2 arquivos</span>
+    </div>
+    <div class="cards-grid">
+
+      <div class="card" data-cat="robotica">
+        <div class="card-header">
+          <div class="card-icon" style="background:#E8F5E9;font-size:22px">🛗</div>
+          <div class="card-meta">
+            <div class="card-titulo">Elevador Acessivel</div>
+            <div class="card-subtitulo">Ficha de atividade — 8o ano</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-desc">Montagem e programacao do elevador com motor, som e display. Tema: Acessibilidade.</div>
+          <div class="card-footer">
+            <span class="tag tag-robo">SPIKE Essential</span>
+            <a href="ficha_elevador_8ano.docx" class="btn-baixar btn-vd" download>⬇ Baixar</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-cat="robotica">
+        <div class="card-header">
+          <div class="card-icon" style="background:#E8F5E9;font-size:22px">⚙️</div>
+          <div class="card-meta">
+            <div class="card-titulo">Programacao em Blocos</div>
+            <div class="card-subtitulo">Guia passo a passo</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-desc">Como montar os blocos de programacao no app SPIKE Essential para iniciantes.</div>
+          <div class="card-footer">
+            <span class="tag tag-robo">SPIKE Essential</span>
+            <span class="tag tag-info">Em breve</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FORMULARIOS -->
+  <div class="secao" id="sec-formulario">
+    <div class="secao-titulo">
+      <div class="icone" style="background:#F2E6FF">📝</div>
+      <h2>Formularios e Avaliacoes</h2>
+      <span>1 disponivel</span>
+    </div>
+    <div class="cards-grid">
+
+      <div class="card" data-cat="formulario">
+        <div class="card-header">
+          <div class="card-icon" style="background:#F2E6FF;font-size:22px">✅</div>
+          <div class="card-meta">
+            <div class="card-titulo">Avaliacao de Excel</div>
+            <div class="card-subtitulo">15 questoes — correcao automatica</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-desc">Formulas basicas, busca (PROCV/PROCX), funcoes avancadas. Veja sua nota na hora!</div>
+          <div class="card-footer">
+            <span class="tag tag-html">Online</span>
+            <a href="formulario_excel_professor.html" class="btn-baixar btn-az" target="_blank">▶ Responder</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- APRESENTACOES -->
+  <div class="secao" id="sec-apresentacao">
+    <div class="secao-titulo">
+      <div class="icone" style="background:#FCE4D6">📑</div>
+      <h2>Apresentacoes</h2>
+      <span>1 arquivo</span>
+    </div>
+    <div class="cards-grid">
+
+      <div class="card" data-cat="apresentacao">
+        <div class="card-header">
+          <div class="card-icon" style="background:#FCE4D6;font-size:22px">📊</div>
+          <div class="card-meta">
+            <div class="card-titulo">Como Criar uma Pasta</div>
+            <div class="card-subtitulo">Slide para sala de aula</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-desc">Apresentacao em PowerPoint ensinando organizacao de arquivos no computador.</div>
+          <div class="card-footer">
+            <span class="tag tag-pptx">PowerPoint</span>
+            <a href="COMO CRIAR UMA PASTA.pptx" class="btn-baixar btn-az" download>⬇ Baixar</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <p>Feito com carinho por <strong>Prof. Dario Oliveira</strong> · DSO Educacao · Nova Mutum - MT</p>
+  <p style="margin-top:6px;font-size:11px">Para adicionar novos arquivos, entre em contato com o professor.</p>
+</footer>
+
+<script>
+function filtrar(cat, btn) {
+  document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('ativo'));
+  btn.classList.add('ativo');
+  document.querySelectorAll('.card[data-cat],.card-destaque[data-cat]').forEach(card => {
+    if(cat === 'todos' || card.dataset.cat === cat) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+  document.querySelectorAll('.secao').forEach(sec => {
+    if(cat === 'todos') { sec.style.display = ''; return; }
+    const visivel = sec.querySelector(`.card[data-cat="${cat}"],.card-destaque[data-cat="${cat}"]`);
+    sec.style.display = visivel ? '' : 'none';
+  });
+}
+</script>
+
+</body>
+</html>
